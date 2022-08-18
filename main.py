@@ -23,6 +23,7 @@ if new_width <= wallpaper_width:
     img.thumbnail((wallpaper_width, new_height))
     crop_height = (img.size[1] - wallpaper_height) / 2
     # Crop the image to the center of the image
+    print("Cutting excess height")
     wallpaper_crop = img.crop((0, crop_height, wallpaper_width,
                                wallpaper_height + crop_height))
     wallpaper_crop.save("Wallpaper.png")  # Save the wallpaper
@@ -35,6 +36,7 @@ else:
     img.thumbnail((new_width, wallpaper_height))
     crop_width = (new_width - wallpaper_width) / 2
     # Crop wallpaper to the center of the image
+    print("Cutting excess width")
     wallpaper_crop = img.crop(
         (crop_width, 0, wallpaper_width + crop_width, wallpaper_height))
     wallpaper_crop.save("Wallpaper.png")  # Save the wallpaper
