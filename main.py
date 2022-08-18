@@ -1,29 +1,46 @@
 from PIL import Image
 import sys
 
-final_width = 1920  # Change here to the desired width
-final_height = 1080  # Change here to the desired height
+wallpaper_width = 1920  # Change here to the desired wallpaper width
+wallpaper_height = 1080  # Change here to the desired wallpaper height
+panel_height = 38  # Change here to the desired height of the panel
 
 
 # Dont touch anything below this line
+if len(sys.argv) < 2:
+    print("Usage: main.py <image>")
+    sys.exit(1)
+
 img = Image.open(sys.argv[1])
 
-new_width = img.size[0] / (img.size[1] / final_height)
+new_width = img.size[0] / (img.size[1] / wallpaper_height)
 # new_height is strictly not needed here, could be inside the else statement, but I'm keeping it here for clarity
-new_height = img.size[1] / (img.size[0] / final_width)
+new_height = img.size[1] / (img.size[0] / wallpaper_width)
 
 
-if new_width <= final_width:
+if new_width <= wallpaper_width:
     print("Scaling down to fit width")
-    img.thumbnail((final_width, new_height))
-    crop_height = (img.size[1] - final_height) / 2
-    img_crop = img.crop((0, crop_height, final_width,
-                        final_height + crop_height))
+    img.thumbnail((wallpaper_width, new_height))
+    crop_height = (img.size[1] - wallpaper_height) / 2
+    # Crop the image to the center of the image
+    wallpaper_crop = img.crop((0, crop_height, wallpaper_width,
+                               wallpaper_height + crop_height))
+    wallpaper_crop.save("Wallpaper.png")  # Save the wallpaper
+    # Crop the Panel background to the bottom of the image
+    panel_crop = wallpaper_crop.crop(
+        (0, wallpaper_height - panel_height, wallpaper_width, wallpaper_height))
+    panel_crop.save("Panel.png")  # Save the panel background
 else:
     print("Scaling down to fit height")
-    img.thumbnail((new_width, final_height))
-    crop_width = (new_width - final_width) / 2
-    img_crop = img.crop(
-        (crop_width, 0, final_width + crop_width, final_height))
+    img.thumbnail((new_width, wallpaper_height))
+    crop_width = (new_width - wallpaper_width) / 2
+    # Crop wallpaper to the center of the image
+    wallpaper_crop = img.crop(
+        (crop_width, 0, wallpaper_width + crop_width, wallpaper_height))
+    wallpaper_crop.save("Wallpaper.png")  # Save the wallpaper
+    # Crop the Panel background to the bottom of the image
+    panel_crop = wallpaper_crop.crop(
+        (0, wallpaper_height - panel_height, wallpaper_width, wallpaper_height))
+    panel_crop.save("Panel.png")  # Save the panel background
 
-img_crop.show()
+print("Done, check the folder for Wallpaper.png and Panel.png")
