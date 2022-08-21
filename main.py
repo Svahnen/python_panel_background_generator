@@ -1,17 +1,16 @@
 from PIL import Image
 import sys
 
-wallpaper_width = 1920  # Change here to the desired wallpaper width
-wallpaper_height = 1080  # Change here to the desired wallpaper height
-panel_height = 38  # Change here to the desired height of the panel
+# Receive the arguments for the wallpaper and panel size
+wallpaper_width = int(sys.argv[1])
+wallpaper_height = int(sys.argv[2])
+panel_height = int(sys.argv[3])
 
-
-# Dont touch anything below this line
-if len(sys.argv) < 2:
-    print("Usage: main.py <image>")
+if len(sys.argv) < 5:
+    print("Usage: main.py width height panel-height <image>")
     sys.exit(1)
 
-img = Image.open(sys.argv[1])
+img = Image.open(sys.argv[4])
 
 new_width = img.size[0] / (img.size[1] / wallpaper_height)
 # new_height is strictly not needed here, could be inside the else statement, but I'm keeping it here for clarity
